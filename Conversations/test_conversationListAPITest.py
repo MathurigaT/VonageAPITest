@@ -29,25 +29,31 @@ def setHeader(token):
     return header
 
 def test_listConverstationWithValidJWTToken():
-        response = requests.get(url, headers=setHeader(access_token["JWT_TOKEN"]))
-        assert response.status_code == 200
-        json_response=response.json()
-        if str(response.status_code) in __ResponsePass:
-            if json_response["count"] >0:
-                assert (json_response["_embedded"]["conversations"][0]["_links"]["self"]["href"]).endswith(json_response["_embedded"]["conversations"][0]["uuid"])
+    """Test case to list conversation without JWT Token.
+    """
+    response = requests.get(url, headers=setHeader(access_token["JWT_TOKEN"]))
+    assert response.status_code == 200
+    json_response=response.json()
+    if str(response.status_code) in __ResponsePass:
+        if json_response["count"] >0:
+            assert (json_response["_embedded"]["conversations"][0]["_links"]["self"]["href"]).endswith(json_response["_embedded"]["conversations"][0]["uuid"])
             LOGGER.info('List all conversation API with valid JWT Token Test Case is successfully executed')
-        else:
-            handleErrorCodes(response.status_code)
+    else:
+        handleErrorCodes(response.status_code)
 
 def test_listConverstationWithOutJWTToken():
-        response = requests.get(url)
-        json_response=response.json()
-        assert response.status_code == 401
-        assert json_response["code"] == 'system:error:invalid-token'
-        LOGGER.info('List all conversation API with valid JWT Token Test Case is successfully executed')
+    """Test case to list conversation without JWT Token.
+    """
+    response = requests.get(url)
+    json_response=response.json()
+    assert response.status_code == 401
+    assert json_response["code"] == 'system:error:invalid-token'
+    LOGGER.info('List all conversation API with valid JWT Token Test Case is successfully executed')
 
 
 def test_listConverstationWithInvalidJWTToken():
+    """Test case to list conversation with invalid JWT Token.
+    """
     response = requests.get(url,headers=setHeader(access_token["INVALID_TOKEN"]))
     json_response = response.json()
     assert response.status_code == 401 , "JWT is invalid but test case returns " + str(response.status_code)
@@ -55,6 +61,8 @@ def test_listConverstationWithInvalidJWTToken():
     LOGGER.info('List all conversation API with invalid JWT Token Test Case is successfully executed')
 
 def test_listConverstationWithExpiredJWTToken():
+    """Test case to list conversation with expired JWT Token.
+    """
     response = requests.get(url,headers=setHeader(access_token["EXPIRED_TOKEN"]))
     json_response = response.json()
     assert response.status_code == 401 , "JWT is expired but test case returns " + str(response.status_code)

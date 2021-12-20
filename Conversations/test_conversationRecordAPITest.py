@@ -51,6 +51,8 @@ def createDummyConversation():
     return str(response.json()["id"])
 
 def test_recordConverstationWithRequiredField():
+    """Test case to record conversation with required field.
+    """
     conversation_id=createDummyConversation()
     payload = json.dumps({
         "action": "start"
@@ -58,4 +60,4 @@ def test_recordConverstationWithRequiredField():
     LOGGER.info("Endpoint: "+url+"/"+conversation_id+"/record")
     response = requests.put(url+"/"+conversation_id+"/record", headers=setHeader(access_token["JWT_TOKEN"]),data=payload)
     json_response = response.json()
-    assert response.status_code == 200, LOGGER.info("Response "+json_response)
+    assert response.status_code == 200, LOGGER.info("Response "+str(json_response))

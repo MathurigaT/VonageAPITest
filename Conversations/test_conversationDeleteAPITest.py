@@ -45,6 +45,8 @@ def createDummyConversation():
     return str(response.json()["id"])
 
 def test_deleteConverstationWithValidJWTToken():
+    """Test case to delete conversation with valid JWT Token.
+    """
     conversation_id=createDummyConversation()
     LOGGER.info(conversation_id)
     response = requests.delete(url+"/"+conversation_id, headers=setHeader(access_token["JWT_TOKEN"]))
@@ -55,6 +57,8 @@ def test_deleteConverstationWithValidJWTToken():
     LOGGER.info(json_response)
 
 def test_deleteConverstationWithoutConversationId():
+    """Test case to delete conversation without conversation id.
+    """
     conversation_id=None
     LOGGER.info(conversation_id)
     response = requests.delete(url+"/"+str(conversation_id), headers=setHeader(access_token["JWT_TOKEN"]))
@@ -65,15 +69,19 @@ def test_deleteConverstationWithoutConversationId():
     assert json_response["code"] == "conversation:error:not-found"
 
 def test_deleteConverstationWithInValidJWTToken():
+    """Test case to delete conversation with invalid JWT Token.
+    """
     conversation_id=createDummyConversation()
     LOGGER.info(conversation_id)
     response = requests.delete(url+"/"+conversation_id, headers=setHeader(access_token["INVALID_TOKEN"]))
     LOGGER.info(response.status_code)
-    assert response.status_code == 401, "JWT is invalid but test case returns " + str(response.status_code)
+    assert response.status_code == 401, "Delete conversation API with invalid JWT Token should be failed and return 401. Need to fix"
 
 def test_deleteConverstationWithExpiredJWTToken():
+    """Test case to delete conversation with expired JWT Token.
+    """
     conversation_id=createDummyConversation()
     LOGGER.info(conversation_id)
     response = requests.delete(url+"/"+conversation_id, headers=setHeader(access_token["EXPIRED_TOKEN"]))
     LOGGER.info(response.status_code)
-    assert response.status_code == 401, "JWT is expired but test case returns " + str(response.status_code)
+    assert response.status_code == 401, "Delete conversation API with expired JWT Token should be failed and return 401. Need to fix"

@@ -101,7 +101,7 @@ def test_createConverstationWithExpiredJWTToken():
         }
     })
     response = requests.post(url, headers=setHeader(access_token["EXPIRED_TOKEN"]), data=payload)
-    assert response.status_code == 401, 'Create conversation API with in expired JWT Token should be failed and return 401. Need to fix'
+    assert response.status_code == 401, 'Create conversation API with expired JWT Token should be failed and return 401. Need to fix'
 
 
 def test_createConverstationWithInvalidPayLoad():
